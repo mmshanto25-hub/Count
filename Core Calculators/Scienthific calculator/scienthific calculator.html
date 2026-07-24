@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scientific Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="theme.css">
+</head>
+
+<body>
+    <section class="calculator" aria-label="Scientific calculator">
+        <div class="calculator__header">
+            <h1 class="calculator__title">Scientific Calculator</h1>
+            <p class="calculator__subtitle">Powerful calculations with trig, logs, roots, factorials, powers, and angle
+                mode.</p>
+            <div class="mode-toggle" role="group" aria-label="Angle mode">
+                <button type="button" class="angle-button active" data-mode="DEG">DEG</button>
+                <button type="button" class="angle-button" data-mode="RAD">RAD</button>
+            </div>
+        </div>
+
+        <div class="display" aria-live="polite">
+            <div class="display__previous" id="previous-expression"></div>
+            <div class="display__current" id="current-expression">0</div>
+        </div>
+
+        <div class="buttons">
+            <button class="button button--danger" type="button" data-action="clear">C</button>
+            <button class="button button--danger" type="button" data-action="delete">DEL</button>
+            <button class="button button--function" type="button" data-value="(">(</button>
+            <button class="button button--function" type="button" data-value=")">)</button>
+            <button class="button button--operator" type="button" data-value="^">^</button>
+            <button class="button button--function" type="button" data-value="!">x!</button>
+
+            <button class="button button--function" type="button" data-value="sin(">sin</button>
+            <button class="button button--function" type="button" data-value="cos(">cos</button>
+            <button class="button button--function" type="button" data-value="tan(">tan</button>
+            <button class="button button--function" type="button" data-value="ln(">ln</button>
+            <button class="button button--function" type="button" data-value="log(">log</button>
+            <button class="button button--function" type="button" data-value="sqrt(">v</button>
+
+            <button class="button" type="button" data-value="7">7</button>
+            <button class="button" type="button" data-value="8">8</button>
+            <button class="button" type="button" data-value="9">9</button>
+            <button class="button button--operator" type="button" data-value="/">�</button>
+            <button class="button button--function" type="button" data-value="pi">p</button>
+            <button class="button button--function" type="button" data-value="e">e</button>
+
+            <button class="button" type="button" data-value="4">4</button>
+            <button class="button" type="button" data-value="5">5</button>
+            <button class="button" type="button" data-value="6">6</button>
+            <button class="button button--operator" type="button" data-value="*">�</button>
+            <button class="button button--function" type="button" data-value="^2">x�</button>
+            <button class="button button--function" type="button" data-value="^3">x�</button>
+
+            <button class="button" type="button" data-value="1">1</button>
+            <button class="button" type="button" data-value="2">2</button>
+            <button class="button" type="button" data-value="3">3</button>
+            <button class="button button--operator" type="button" data-value="-">-</button>
+            <button class="button button--function" type="button" data-value="10^">10^</button>
+            <button class="button button--function" type="button" data-value="exp(">exp</button>
+
+            <button class="button button--wide" type="button" data-value="0">0</button>
+            <button class="button" type="button" data-value=".">.</button>
+            <button class="button button--operator" type="button" data-value="+">+</button>
+            <button class="button button--function" type="button" data-value="%">%</button>
+            <button class="button button--accent button--wide" type="button" data-action="equals">=</button>
+        </div>
+
+        <div class="calculator__footer">
+            <span>Designed for accuracy, speed, and advanced scientific use.</span>
+            <a href="Index.html">Home</a>
+        </div>
+    </section>
+
+    <script>
+        const previousExpression = document.getElementById('previous-expression');
+        const currentExpression = document.getElementById('current-expression');
+        const angleButtons = document.querySelectorAll('.angle-button');
+        let expression = '';
+        let evaluated = false;
+        let angleMode = 'DEG';
+
+        function updateDisplay() {
+            currentExpression.textContent = expression || '0';
+        }
+
+        function setAngleMode(mode) {
+            angleMode = mode;
+            angleButtons.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.mode === mode);
+            });
+        }
+
+        function appendValue(value) {
+            if (evaluated && !['+', '-', '*', '/', '^', '%', ')', '!'].includes(value)) {
+                expression = value;
+                evaluated = false;
+            } else {
+                if (evaluated && ['+', '-', '*', '/', '^', '%', ')', '!'].includes(value)) {
+                    evaluated = false;
+                }
+                expression += value;
+            }
+            updateDisplay();
+        }
+
+        function clearAll() {
+            expression = '';
+            previousExpression.textContent = '';
+            evaluated = false;
+            updateDisplay();
+        }
+
+        function deleteLast() {
+            expression = expression.slice(0, -1);
+            updateDisplay();
+        }
+
+        function degToRad(x) {
+            return angleMode === 'DEG' ? x * Math.PI / 180 : x;
+        }
+
+        function factorial(n) {
+            if (n < 0 || !Number.isInteger(n)) return NaN;
+            let result = 1;
+            for (let i = 2; i <= n; i += 1) result *= i;
+            return result;
+        }
+
+        function prepareExpression(expr) {
+            let prepared = expr;
+            prepared = prepared.replace(/p/g, 'pi');
+            prepared = prepared.replace(/\bpi\b/g, 'Math.PI');
+            prepared = prepared.replace(/\be\b/g, 'Math.E');
+            prepared = prepared.replace(/\bln\(/g, 'Math.log(');
+            prepared = prepared.replace(/\blog\(/g, 'Math.log10(');
+            prepared = prepared.replace(/\bsqrt\(/g, 'Math.sqrt(');
+            prepared = prepared.replace(/\bexp\(/g, 'Math.exp(');
+            prepared = prepared.replace(/10\^/g, '10**');
+            prepared = prepared.replace(/\^2/g, '**2');
+            prepared = prepared.replace(/\^3/g, '**3');
+            prepared = prepared.replace(/sin\(/g, 'Math.sin(degToRad(');
+            prepared = prepared.replace(/cos\(/g, 'Math.cos(degToRad(');
+            prepared = prepared.replace(/tan\(/g, 'Math.tan(degToRad(');
+            prepared = prepared.replace(/%/g, '/100');
+            return prepared;
+        }
+
+        function evaluateExpression() {
+            if (!expression) return;
+            const sanitized = expression.replace(/\s+/g, '');
+            let prepared = sanitized;
+            prepared = prepared.replace(/(\d+)!/g, 'factorial($1)');
+            try {
+                prepared = prepareExpression(prepared);
+                const result = Function('Math', 'factorial', 'degToRad', `"use strict"; return (${prepared})`)(Math, factorial, degToRad);
+                if (!Number.isFinite(result)) throw new Error('Invalid result');
+                previousExpression.textContent = `${expression} =`;
+                expression = String(result);
+                evaluated = true;
+                updateDisplay();
+            } catch {
+                currentExpression.textContent = 'Error';
+                expression = '';
+                evaluated = false;
+            }
+        }
+
+        document.querySelectorAll('.button').forEach(button => {
+            button.addEventListener('click', () => {
+                const action = button.dataset.action;
+                const value = button.dataset.value;
+                if (action === 'clear') {
+                    clearAll();
+                    return;
+                }
+                if (action === 'delete') {
+                    deleteLast();
+                    return;
+                }
+                if (action === 'equals') {
+                    evaluateExpression();
+                    return;
+                }
+                if (value) {
+                    appendValue(value);
+                }
+            });
+        });
+
+        angleButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                setAngleMode(button.dataset.mode);
+            });
+        });
+
+        window.addEventListener('keydown', event => {
+            const key = event.key;
+            const allowed = '0123456789.+-*/()%^!';
+            if (allowed.includes(key)) {
+                event.preventDefault();
+                appendValue(key);
+                return;
+            }
+            if (key === 'Enter' || key === '=') {
+                event.preventDefault();
+                evaluateExpression();
+                return;
+            }
+            if (key === 'Backspace') {
+                event.preventDefault();
+                deleteLast();
+                return;
+            }
+            if (key.toLowerCase() === 'c') {
+                event.preventDefault();
+                clearAll();
+                return;
+            }
+        });
+
+        setAngleMode('DEG');
+        updateDisplay();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="theme.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>BMI Calculator</h1>
+            <p>Quickly calculate your body mass index and see whether you are underweight, healthy, overweight or obese.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="row">
+                <div>
+                    <label for="weight">Weight</label>
+                    <input id="weight" type="number" min="1" step="0.1" placeholder="Kilograms" />
+                </div>
+                <div>
+                    <label for="height">Height</label>
+                    <input id="height" type="number" min="30" step="0.1" placeholder="Centimeters" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div>
+                    <label for="age">Age</label>
+                    <input id="age" type="number" min="1" step="1" placeholder="Years" />
+                </div>
+                <div>
+                    <label for="gender">Gender</label>
+                    <select id="gender">
+                        <option value="other">Prefer not to say</option>
+                        <option value="female">Female</option>
+                        <option value="male">Male</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="button" type="button" id="calculate">Calculate BMI</button>
+                <button class="button button--reset" type="button" id="reset">Reset</button>
+            </div>
+
+            <div class="result" aria-live="polite">
+                <p class="result__value" id="bmi-value">0.0</p>
+                <p class="result__label" id="bmi-label">Enter your details and calculate your BMI.</p>
+                <div class="result__score" id="bmi-range">Healthy BMI is between 18.5 and 24.9</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const weightInput = document.getElementById('weight');
+        const heightInput = document.getElementById('height');
+        const bmiValue = document.getElementById('bmi-value');
+        const bmiLabel = document.getElementById('bmi-label');
+        const bmiRange = document.getElementById('bmi-range');
+        const calculateButton = document.getElementById('calculate');
+        const resetButton = document.getElementById('reset');
+
+        function formatBMI(value) {
+            return value.toFixed(1);
+        }
+
+        function getCategory(bmi) {
+            if (bmi < 18.5) return { text: 'Underweight', color: '--accent' };
+            if (bmi < 25) return { text: 'Normal weight', color: '--success' };
+            if (bmi < 30) return { text: 'Overweight', color: '--accent2' };
+            return { text: 'Obese', color: '--danger' };
+        }
+
+        function updateResult() {
+            const weight = parseFloat(weightInput.value);
+            const height = parseFloat(heightInput.value);
+
+            if (!weight || !height) {
+                bmiValue.textContent = '0.0';
+                bmiLabel.textContent = 'Enter your details and calculate your BMI.';
+                bmiRange.textContent = 'Healthy BMI is between 18.5 and 24.9';
+                return;
+            }
+
+            const heightMeters = height / 100;
+            const bmi = weight / (heightMeters * heightMeters);
+            const category = getCategory(bmi);
+
+            bmiValue.textContent = formatBMI(bmi);
+            bmiLabel.textContent = `Your BMI indicates ${category.text}.`;
+            bmiRange.textContent = `BMI category: ${category.text} (Age ${document.getElementById('age').value || 'any'})`;
+
+            bmiValue.style.color = `var(${category.color})`;
+            bmiLabel.style.color = `var(${category.color})`;
+        }
+
+        calculateButton.addEventListener('click', () => {
+            updateResult();
+        });
+
+        resetButton.addEventListener('click', () => {
+            weightInput.value = '';
+            heightInput.value = '';
+            document.getElementById('age').value = '';
+            document.getElementById('gender').value = 'other';
+            bmiValue.textContent = '0.0';
+            bmiValue.style.color = 'var(--text)';
+            bmiLabel.textContent = 'Enter your details and calculate your BMI.';
+            bmiLabel.style.color = 'var(--text)';
+            bmiRange.textContent = 'Healthy BMI is between 18.5 and 24.9';
+        });
+    </script>
+</body>
+
+</html>

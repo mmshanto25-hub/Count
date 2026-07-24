@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mortage Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="theme.css">
+</head>
+
+<body>
+    <main class="page">
+        <section class="hero">
+            <h1>Mortgage Calculator</h1>
+            <p>Quickly estimate your monthly payment, total interest, and total payment for a fixed-rate mortgage loan.
+            </p>
+        </section>
+
+        <section class="calculator" aria-label="Mortgage calculator">
+            <div class="form-grid">
+                <div class="field">
+                    <label for="loan-amount">Loan amount</label>
+                    <input id="loan-amount" type="number" min="0" step="100" placeholder="e.g. 250000"
+                        aria-describedby="loan-help">
+                    <p class="note" id="loan-help">Enter the total amount you want to borrow.</p>
+                </div>
+
+                <div class="field">
+                    <label for="interest-rate">Annual interest rate (%)</label>
+                    <input id="interest-rate" type="number" min="0" step="0.01" placeholder="e.g. 4.25">
+                </div>
+
+                <div class="field">
+                    <label for="loan-term">Loan term (years)</label>
+                    <input id="loan-term" type="number" min="1" step="1" placeholder="e.g. 30">
+                </div>
+
+                <div class="field">
+                    <label for="payment-frequency">Payment frequency</label>
+                    <select id="payment-frequency">
+                        <option value="12">Monthly</option>
+                        <option value="26">Biweekly</option>
+                        <option value="52">Weekly</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="button" id="calculate-button" type="button">Calculate Payment</button>
+                <button class="button button--secondary" id="reset-button" type="button">Reset fields</button>
+            </div>
+
+            <div class="results" aria-live="polite">
+                <div class="result-item">
+                    <div class="result-label">Payment per period</div>
+                    <div class="result-value" id="payment-result">$0.00</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Total of payments</div>
+                    <div class="result-value" id="total-result">$0.00</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Total interest</div>
+                    <div class="result-value" id="interest-result">$0.00</div>
+                </div>
+            </div>
+        </section>
+
+        <div class="page-footer">
+            <span>Use a fixed-rate estimation for planning your mortgage.</span>
+            <a href="Index.html">Back to home</a>
+        </div>
+    </main>
+
+    <script>
+        const loanAmountInput = document.getElementById('loan-amount');
+        const interestRateInput = document.getElementById('interest-rate');
+        const loanTermInput = document.getElementById('loan-term');
+        const paymentFrequencyInput = document.getElementById('payment-frequency');
+        const paymentResult = document.getElementById('payment-result');
+        const totalResult = document.getElementById('total-result');
+        const interestResult = document.getElementById('interest-result');
+        const calculateButton = document.getElementById('calculate-button');
+        const resetButton = document.getElementById('reset-button');
+
+        function formatCurrency(value) {
+            return value.toLocaleString('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+
+        function calculateMortgage() {
+            const loanAmount = Number(loanAmountInput.value);
+            const annualRate = Number(interestRateInput.value);
+            const termYears = Number(loanTermInput.value);
+            const periodsPerYear = Number(paymentFrequencyInput.value);
+
+            if (!loanAmount || loanAmount <= 0 || !termYears || termYears <= 0 || annualRate < 0) {
+                paymentResult.textContent = 'Enter valid values';
+                totalResult.textContent = 'Enter valid values';
+                interestResult.textContent = 'Enter valid values';
+                return;
+            }
+
+            const totalPeriods = termYears * periodsPerYear;
+            const periodicRate = annualRate / 100 / periodsPerYear;
+            let payment;
+
+            if (periodicRate === 0) {
+                payment = loanAmount / totalPeriods;
+            } else {
+                payment = loanAmount * (periodicRate * Math.pow(1 + periodicRate, totalPeriods)) /
+                    (Math.pow(1 + periodicRate, totalPeriods) - 1);
+            }
+
+            const totalPayment = payment * totalPeriods;
+            const totalInterest = totalPayment - loanAmount;
+
+            paymentResult.textContent = formatCurrency(payment);
+            totalResult.textContent = formatCurrency(totalPayment);
+            interestResult.textContent = formatCurrency(totalInterest);
+        }
+
+        function resetCalculator() {
+            loanAmountInput.value = '';
+            interestRateInput.value = '';
+            loanTermInput.value = '';
+            paymentFrequencyInput.value = '12';
+            paymentResult.textContent = '$0.00';
+            totalResult.textContent = '$0.00';
+            interestResult.textContent = '$0.00';
+        }
+
+        calculateButton.addEventListener('click', calculateMortgage);
+        resetButton.addEventListener('click', resetCalculator);
+
+        loanAmountInput.addEventListener('keydown', event => {
+            if (event.key === 'Enter') {
+                calculateMortgage();
+            }
+        });
+    </script>
+</body>
+
+</html>
