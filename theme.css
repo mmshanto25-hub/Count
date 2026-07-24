@@ -3,7 +3,7 @@
     --bg: #040302;
     --panel: #19130d;
     --surface: #1f170f;
-    --text: #f7e8b5;
+    --text: #7e6c6c;
     --muted: #b49e70;
     --accent: #f2d27a;
     --accent2: #c69c30;
@@ -16,7 +16,7 @@
 
 html {
     min-height: 100%;
-    background: radial-gradient(circle at top, rgba(242, 210, 122, 0.12), transparent 32%),
+    background: radial-gradient(circle at top, rgba(180, 133, 5, 0.12), transparent 32%),
         linear-gradient(180deg, #040302 0%, #050403 100%);
     color: var(--text);
     text-rendering: optimizeLegibility;

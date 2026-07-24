@@ -35,7 +35,7 @@
   }
 
   .hero {
-      background: rgba(18, 12, 8, 0.92);
+      background: rgba(0, 0, 0, 0.92);
       border: 1px solid rgba(255, 215, 0, 0.18);
       border-radius: 28px;
       padding: 30px 32px;
@@ -79,7 +79,7 @@
 
   .card p {
       margin: 0 0 22px;
-      color: #cdbb84;
+      color: #9ae908;
       line-height: 1.7;
   }
 
@@ -97,7 +97,7 @@
       padding: 16px 18px;
       text-decoration: none;
       border-radius: 18px;
-      background: rgba(255, 215, 0, 0.08);
+      background: rgba(253, 216, 4, 0.08);
       border: 1px solid rgba(255, 215, 0, 0.2);
       color: #fff5c4;
       transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
