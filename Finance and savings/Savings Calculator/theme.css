@@ -1,0 +1,172 @@
+:root {
+    color-scheme: dark;
+    --bg: #040302;
+    --panel: #19130d;
+    --surface: #1f170f;
+    --text: #f7e8b5;
+    --muted: #b49e70;
+    --accent: #f2d27a;
+    --accent2: #c69c30;
+    --accent-strong: #d6ac4d;
+    --button: #2f2417;
+    --button-hover: #5c4728;
+    --border: rgba(243, 206, 110, 0.25);
+    --shadow: 0 28px 72px rgba(0, 0, 0, 0.38);
+}
+
+html {
+    min-height: 100%;
+    background: radial-gradient(circle at top, rgba(242, 210, 122, 0.12), transparent 32%),
+        linear-gradient(180deg, #040302 0%, #050403 100%);
+    color: var(--text);
+    text-rendering: optimizeLegibility;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: 'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    line-height: 1.6;
+    background: transparent;
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 28px;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at top left, rgba(243, 206, 110, 0.08), transparent 34%),
+        radial-gradient(circle at bottom right, rgba(243, 206, 110, 0.04), transparent 24%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.container,
+.calculator,
+.page,
+.card,
+.result,
+.display,
+.calculator__header,
+.hero,
+.result-card {
+    background: radial-gradient(circle at top, rgba(255, 236, 172, 0.05), rgba(9, 6, 3, 0.96));
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    color: var(--text);
+}
+
+.hero,
+.calculator__header,
+.card,
+.result,
+.display,
+.result-card {
+    border-radius: 28px;
+}
+
+h1,
+h2,
+.calculator__title,
+.card h2,
+.result-card h2 {
+    font-family: 'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    line-height: 1.08;
+    color: #f9e8b7;
+}
+
+.hero p,
+.calculator__subtitle,
+.section-footer,
+.result__label,
+label,
+.link span,
+.muted {
+    color: var(--muted);
+}
+
+.link,
+.button,
+button,
+.links .link,
+.actions .button {
+    background: rgba(255, 215, 0, 0.11);
+    border: 1px solid rgba(243, 206, 110, 0.25);
+    color: #f8e9b7;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+    transition: transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.link:hover,
+.button:hover,
+button:hover,
+.link:focus-visible {
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, rgba(255, 217, 90, 0.95), rgba(206, 158, 40, 0.85));
+    border-color: rgba(255, 215, 0, 0.35);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.2);
+}
+
+.button--accent,
+.button--operator,
+.button--wide,
+.link--accent {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.95), rgba(206, 158, 40, 0.9));
+    color: #1a1204 !important;
+}
+
+.button--danger,
+.btn-danger {
+    background: #c9972d !important;
+    color: #100a01 !important;
+}
+
+.button--reset,
+.button--clear {
+    background: rgba(255, 215, 0, 0.12) !important;
+    color: var(--text) !important;
+}
+
+input,
+select,
+textarea {
+    border: 1px solid rgba(255, 215, 0, 0.12) !important;
+    background: rgba(255, 215, 0, 0.04) !important;
+    color: var(--text) !important;
+    font-family: inherit;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: rgba(255, 215, 0, 0.45) !important;
+    box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.12) !important;
+}
+
+a {
+    color: #fef1b5 !important;
+    text-decoration: none;
+}
+
+@media (max-width: 520px) {
+    body {
+        padding: 18px;
+    }
+
+    .sections {
+        grid-template-columns: 1fr !important;
+    }
+
+    .button,
+    .link {
+        width: 100%;
+    }
+}

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Frequency Converter</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="theme.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>Frequency Converter</h1>
+            <p>Convert common frequency units such as hertz, kilohertz, megahertz, and gigahertz.</p>
+        </div>
+
+        <div class="card">
+            <div class="row">
+                <div>
+                    <label for="input-value">Value</label>
+                    <input id="input-value" type="number" step="0.000001" placeholder="Enter frequency" />
+                </div>
+                <div>
+                    <label for="from-unit">From unit</label>
+                    <select id="from-unit">
+                        <option value="hz">Hertz (Hz)</option>
+                        <option value="khz">Kilohertz (kHz)</option>
+                        <option value="mhz">Megahertz (MHz)</option>
+                        <option value="ghz">Gigahertz (GHz)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div>
+                    <label for="to-unit">To unit</label>
+                    <select id="to-unit">
+                        <option value="hz">Hertz (Hz)</option>
+                        <option value="khz">Kilohertz (kHz)</option>
+                        <option value="mhz">Megahertz (MHz)</option>
+                        <option value="ghz">Gigahertz (GHz)</option>
+                    </select>
+                </div>
+                <div>
+                    <label>&nbsp;</label>
+                    <div class="actions">
+                        <button class="button" type="button" id="convert">Convert</button>
+                        <button class="button button--reset" type="button" id="reset">Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="result" aria-live="polite">
+                <p class="result__value" id="output-value">0.000000</p>
+                <p class="result__label" id="output-label">Select units and convert a frequency.</p>
+                <div class="result__details">
+                    <span id="detail-from">From: 0.000000 Hz</span>
+                    <span id="detail-to">To: 0.000000 Hz</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const inputValue = document.getElementById('input-value');
+        const fromUnit = document.getElementById('from-unit');
+        const toUnit = document.getElementById('to-unit');
+        const outputValue = document.getElementById('output-value');
+        const outputLabel = document.getElementById('output-label');
+        const detailFrom = document.getElementById('detail-from');
+        const detailTo = document.getElementById('detail-to');
+        const convertButton = document.getElementById('convert');
+        const resetButton = document.getElementById('reset');
+
+        function formatNumber(value) {
+            return Number(value).toLocaleString('en-US', {
+                maximumFractionDigits: 6,
+                minimumFractionDigits: 6,
+            });
+        }
+
+        function toHertz(value, unit) {
+            switch (unit) {
+                case 'hz':
+                    return value;
+                case 'khz':
+                    return value * 1e3;
+                case 'mhz':
+                    return value * 1e6;
+                case 'ghz':
+                    return value * 1e9;
+                default:
+                    return value;
+            }
+        }
+
+        function fromHertz(value, unit) {
+            switch (unit) {
+                case 'hz':
+                    return value;
+                case 'khz':
+                    return value / 1e3;
+                case 'mhz':
+                    return value / 1e6;
+                case 'ghz':
+                    return value / 1e9;
+                default:
+                    return value;
+            }
+        }
+
+        function unitLabel(unit) {
+            switch (unit) {
+                case 'hz':
+                    return 'Hz';
+                case 'khz':
+                    return 'kHz';
+                case 'mhz':
+                    return 'MHz';
+                case 'ghz':
+                    return 'GHz';
+                default:
+                    return unit;
+            }
+        }
+
+        function convertFrequency() {
+            const input = Number(inputValue.value);
+            const from = fromUnit.value;
+            const to = toUnit.value;
+
+            if (Number.isNaN(input)) {
+                outputValue.textContent = 'Enter a number';
+                outputLabel.textContent = 'Please type a frequency value first.';
+                detailFrom.textContent = 'From: �';
+                detailTo.textContent = 'To: �';
+                return;
+            }
+
+            const hertz = toHertz(input, from);
+            const result = fromHertz(hertz, to);
+
+            outputValue.textContent = formatNumber(result);
+            outputLabel.textContent = `${formatNumber(input)} ${unitLabel(from)} =`;
+            detailFrom.textContent = `From: ${formatNumber(input)} ${unitLabel(from)}`;
+            detailTo.textContent = `To: ${formatNumber(result)} ${unitLabel(to)}`;
+        }
+
+        function resetConverter() {
+            inputValue.value = '';
+            fromUnit.value = 'hz';
+            toUnit.value = 'khz';
+            outputValue.textContent = '0.000000';
+            outputLabel.textContent = 'Select units and convert a frequency.';
+            detailFrom.textContent = 'From: 0.000000 Hz';
+            detailTo.textContent = 'To: 0.000000 Hz';
+        }
+
+        convertButton.addEventListener('click', convertFrequency);
+        resetButton.addEventListener('click', resetConverter);
+        inputValue.addEventListener('keydown', event => {
+            if (event.key === 'Enter') {
+                convertFrequency();
+            }
+        });
+    </script>
+</body>
+
+</html>

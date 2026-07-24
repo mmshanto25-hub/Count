@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investment Calculator</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: #0b1324;
+            --panel: #121b35;
+            --surface: #162347;
+            --text: #eef4ff;
+            --muted: #8ca2c8;
+            --accent: #5cd7ff;
+            --accent2: #3f8dff;
+            --success: #3ce6d2;
+            --shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text);
+            background: radial-gradient(circle at top, rgba(92, 213, 255, 0.16), transparent 42%),
+                        linear-gradient(180deg, #0b1324 0%, #070b16 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }
+
+        .container {
+            width: min(760px, 100%);
+            border-radius: 28px;
+            background: rgba(17, 27, 55, 0.98);
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .hero {
+            padding: 32px 34px;
+        }
+
+        .hero h1 {
+            margin: 0;
+            font-size: clamp(2rem, 3vw, 3rem);
+            letter-spacing: 0.01em;
+        }
+
+        .hero p {
+            margin: 14px 0 0;
+            color: var(--muted);
+            line-height: 1.7;
+            max-width: 780px;
+        }
+
+        .card {
+            padding: 28px 34px 34px;
+            background: linear-gradient(180deg, rgba(16, 24, 46, 0.94) 0%, rgba(13, 19, 38, 0.96) 100%);
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+            margin-bottom: 18px;
+        }
+
+        .row--full {
+            grid-template-columns: 1fr;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 16px 14px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: #0f172a;
+            color: var(--text);
+            font-size: 1rem;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: rgba(92, 215, 255, 0.75);
+            box-shadow: 0 0 0 4px rgba(92, 215, 255, 0.12);
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .button {
+            flex: 1 1 160px;
+            min-width: 140px;
+            border: none;
+            border-radius: 18px;
+            padding: 16px 24px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            color: var(--text);
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            box-shadow: 0 14px 24px rgba(42, 129, 255, 0.17);
+        }
+
+        .button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 16px 28px rgba(42, 129, 255, 0.24);
+        }
+
+        .button--reset {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text);
+            box-shadow: none;
+        }
+
+        .result {
+            padding: 26px;
+            border-radius: 24px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .result-card {
+            padding: 20px;
+            border-radius: 18px;
+            background: rgba(7, 13, 28, 0.85);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .result-card h2 {
+            margin: 0 0 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--muted);
+        }
+
+        .result-card p {
+            margin: 0;
+            font-size: 2rem;
+            line-height: 1.1;
+            color: var(--text);
+        }
+
+        .hint {
+            margin-top: 22px;
+            color: var(--muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 720px) {
+            .row,
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+        }
+    </style>    <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>Investment Calculator</h1>
+            <p>Estimate the future value of your investment with recurring contributions and compound interest. Use this tool to compare growth across different terms and compounding frequencies.</p>
+        </div>
+
+        <div class="card">
+            <div class="row">
+                <div>
+                    <label for="principal">Initial Investment</label>
+                    <input id="principal" type="number" min="0" step="100" placeholder="e.g. 5000" />
+                </div>
+                <div>
+                    <label for="annualContribution">Annual Contribution</label>
+                    <input id="annualContribution" type="number" min="0" step="100" placeholder="e.g. 3000" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div>
+                    <label for="interestRate">Annual Return (%)</label>
+                    <input id="interestRate" type="number" min="0" step="0.1" placeholder="e.g. 7" />
+                </div>
+                <div>
+                    <label for="years">Investment Period (Years)</label>
+                    <input id="years" type="number" min="1" step="1" placeholder="e.g. 20" />
+                </div>
+            </div>
+
+            <div class="row row--full">
+                <div>
+                    <label for="compoundFrequency">Compounding Frequency</label>
+                    <select id="compoundFrequency">
+                        <option value="1">Annually</option>
+                        <option value="4">Quarterly</option>
+                        <option value="12" selected>Monthly</option>
+                        <option value="365">Daily</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="button" type="button" id="calculate">Calculate</button>
+                <button class="button button--reset" type="button" id="reset">Reset</button>
+            </div>
+
+            <div class="result" aria-live="polite">
+                <div class="result-grid">
+                    <div class="result-card">
+                        <h2>Future Value</h2>
+                        <p id="futureValue">$0</p>
+                    </div>
+                    <div class="result-card">
+                        <h2>Total Contributions</h2>
+                        <p id="totalContributions">$0</p>
+                    </div>
+                    <div class="result-card">
+                        <h2>Interest Earned</h2>
+                        <p id="interestEarned">$0</p>
+                    </div>
+                    <div class="result-card">
+                        <h2>Annual Return</h2>
+                        <p id="effectiveRate">0%</p>
+                    </div>
+                </div>
+                <p class="hint" id="resultHint">Enter your investment details and click Calculate to view the future value of your savings.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const principalInput = document.getElementById('principal');
+        const annualContributionInput = document.getElementById('annualContribution');
+        const interestRateInput = document.getElementById('interestRate');
+        const yearsInput = document.getElementById('years');
+        const compoundFrequencyInput = document.getElementById('compoundFrequency');
+        const futureValueEl = document.getElementById('futureValue');
+        const totalContributionsEl = document.getElementById('totalContributions');
+        const interestEarnedEl = document.getElementById('interestEarned');
+        const effectiveRateEl = document.getElementById('effectiveRate');
+        const resultHintEl = document.getElementById('resultHint');
+        const calculateButton = document.getElementById('calculate');
+        const resetButton = document.getElementById('reset');
+
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                maximumFractionDigits: 0,
+            }).format(value);
+        }
+
+        function formatPercent(value) {
+            return `${value.toFixed(2)}%`;
+        }
+
+        function calculateFutureValue(principal, annualContribution, rate, years, periods) {
+            const periodicRate = rate / periods;
+            const totalPeriods = periods * years;
+            const contributionPerPeriod = annualContribution / periods;
+
+            const compoundFactor = Math.pow(1 + periodicRate, totalPeriods);
+            const futurePrincipal = principal * compoundFactor;
+            const futureContributions = contributionPerPeriod * ((compoundFactor - 1) / periodicRate);
+            return futurePrincipal + futureContributions;
+        }
+
+        function getEffectiveAnnualRate(rate, periods) {
+            return Math.pow(1 + rate / periods, periods) - 1;
+        }
+
+        function updateResults() {
+            const principal = parseFloat(principalInput.value) || 0;
+            const annualContribution = parseFloat(annualContributionInput.value) || 0;
+            const interestRate = parseFloat(interestRateInput.value) || 0;
+            const years = parseFloat(yearsInput.value) || 0;
+            const periods = parseInt(compoundFrequencyInput.value, 10) || 1;
+
+            if (!years || interestRate <= 0) {
+                futureValueEl.textContent = '$0';
+                totalContributionsEl.textContent = '$0';
+                interestEarnedEl.textContent = '$0';
+                effectiveRateEl.textContent = '0%';
+                resultHintEl.textContent = 'Enter a positive interest rate and investment period to calculate your result.';
+                return;
+            }
+
+            const rateDecimal = interestRate / 100;
+            const futureValue = calculateFutureValue(principal, annualContribution, rateDecimal, years, periods);
+            const totalContributions = principal + annualContribution * years;
+            const interestEarned = futureValue - totalContributions;
+            const effectiveAnnualRate = getEffectiveAnnualRate(rateDecimal, periods) * 100;
+
+            futureValueEl.textContent = formatCurrency(futureValue);
+            totalContributionsEl.textContent = formatCurrency(totalContributions);
+            interestEarnedEl.textContent = formatCurrency(interestEarned);
+            effectiveRateEl.textContent = formatPercent(effectiveAnnualRate);
+            resultHintEl.textContent = `After ${years} years with ${compoundFrequencyInput.selectedOptions[0].text.toLowerCase()} compounding, your investment grows to the value shown above.`;
+        }
+
+        calculateButton.addEventListener('click', updateResults);
+        resetButton.addEventListener('click', () => {
+            principalInput.value = '';
+            annualContributionInput.value = '';
+            interestRateInput.value = '';
+            yearsInput.value = '';
+            compoundFrequencyInput.value = '12';
+            updateResults();
+        });
+    </script>
+</body>
+</html>
+

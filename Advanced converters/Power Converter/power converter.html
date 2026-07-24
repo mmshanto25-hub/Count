@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Power Converter</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="theme.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>Power Converter</h1>
+            <p>Convert common power units like watts, kilowatts, horsepower, and BTU/hr.</p>
+        </div>
+
+        <div class="card">
+            <div class="row">
+                <div>
+                    <label for="input-value">Value</label>
+                    <input id="input-value" type="number" step="0.01" placeholder="Enter power value" />
+                </div>
+                <div>
+                    <label for="from-unit">From unit</label>
+                    <select id="from-unit">
+                        <option value="watts">Watts (W)</option>
+                        <option value="kilowatts">Kilowatts (kW)</option>
+                        <option value="horsepower">Horsepower (hp)</option>
+                        <option value="btu_per_hour">BTU/hour</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div>
+                    <label for="to-unit">To unit</label>
+                    <select id="to-unit">
+                        <option value="watts">Watts (W)</option>
+                        <option value="kilowatts">Kilowatts (kW)</option>
+                        <option value="horsepower">Horsepower (hp)</option>
+                        <option value="btu_per_hour">BTU/hour</option>
+                    </select>
+                </div>
+                <div>
+                    <label>&nbsp;</label>
+                    <div class="actions">
+                        <button class="button" type="button" id="convert">Convert</button>
+                        <button class="button button--reset" type="button" id="reset">Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="result" aria-live="polite">
+                <p class="result__value" id="output-value">0.00</p>
+                <p class="result__label" id="output-label">Select units and convert power.</p>
+                <div class="result__details">
+                    <span id="detail-from">From: 0.00 W</span>
+                    <span id="detail-to">To: 0.00 W</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const inputValue = document.getElementById('input-value');
+        const fromUnit = document.getElementById('from-unit');
+        const toUnit = document.getElementById('to-unit');
+        const outputValue = document.getElementById('output-value');
+        const outputLabel = document.getElementById('output-label');
+        const detailFrom = document.getElementById('detail-from');
+        const detailTo = document.getElementById('detail-to');
+        const convertButton = document.getElementById('convert');
+        const resetButton = document.getElementById('reset');
+
+        function formatNumber(value) {
+            return Number(value).toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 4,
+            });
+        }
+
+        function toWatts(value, unit) {
+            switch (unit) {
+                case 'watts':
+                    return value;
+                case 'kilowatts':
+                    return value * 1000;
+                case 'horsepower':
+                    return value * 745.699872;
+                case 'btu_per_hour':
+                    return value * 0.29307107;
+                default:
+                    return value;
+            }
+        }
+
+        function fromWatts(value, unit) {
+            switch (unit) {
+                case 'watts':
+                    return value;
+                case 'kilowatts':
+                    return value / 1000;
+                case 'horsepower':
+                    return value / 745.699872;
+                case 'btu_per_hour':
+                    return value / 0.29307107;
+                default:
+                    return value;
+            }
+        }
+
+        function unitLabel(unit) {
+            switch (unit) {
+                case 'watts':
+                    return 'W';
+                case 'kilowatts':
+                    return 'kW';
+                case 'horsepower':
+                    return 'hp';
+                case 'btu_per_hour':
+                    return 'BTU/hr';
+                default:
+                    return unit;
+            }
+        }
+
+        function convertPower() {
+            const input = Number(inputValue.value);
+            const from = fromUnit.value;
+            const to = toUnit.value;
+
+            if (Number.isNaN(input)) {
+                outputValue.textContent = 'Enter a number';
+                outputLabel.textContent = 'Please type a power value first.';
+                detailFrom.textContent = 'From: �';
+                detailTo.textContent = 'To: �';
+                return;
+            }
+
+            const watts = toWatts(input, from);
+            const result = fromWatts(watts, to);
+
+            outputValue.textContent = formatNumber(result);
+            outputLabel.textContent = `${formatNumber(input)} ${unitLabel(from)} =`;
+            detailFrom.textContent = `From: ${formatNumber(input)} ${unitLabel(from)}`;
+            detailTo.textContent = `To: ${formatNumber(result)} ${unitLabel(to)}`;
+        }
+
+        function resetConverter() {
+            inputValue.value = '';
+            fromUnit.value = 'watts';
+            toUnit.value = 'kilowatts';
+            outputValue.textContent = '0.00';
+            outputLabel.textContent = 'Select units and convert power.';
+            detailFrom.textContent = 'From: 0.00 W';
+            detailTo.textContent = 'To: 0.00 W';
+        }
+
+        convertButton.addEventListener('click', convertPower);
+        resetButton.addEventListener('click', resetConverter);
+        inputValue.addEventListener('keydown', event => {
+            if (event.key === 'Enter') {
+                convertPower();
+            }
+        });
+    </script>
+</body>
+
+</html>

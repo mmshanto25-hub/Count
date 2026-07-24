@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Area Converter</title>
+    <style>
+        :root {
+            --bg: #08131f;
+            --panel: #101f3b;
+            --surface: #16274a;
+            --text: #f0f7ff;
+            --muted: #8da3c5;
+            --accent: #4ec7ff;
+            --accent2: #3a8cff;
+            --shadow: rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle at top, #1b356c 0%, #08131f 70%);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }
+
+        .container {
+            width: min(560px, 100%);
+            background: linear-gradient(180deg, #152957 0%, #101f3b 100%);
+            border-radius: 28px;
+            box-shadow: 0 30px 78px var(--shadow);
+            overflow: hidden;
+        }
+
+        .hero {
+            padding: 28px 32px 20px;
+        }
+
+        .hero h1 {
+            margin: 0;
+            font-size: 2rem;
+            letter-spacing: 0.02em;
+        }
+
+        .hero p {
+            margin: 12px 0 0;
+            color: var(--muted);
+            font-size: 1rem;
+            line-height: 1.55;
+        }
+
+        .card {
+            background: #111f3b;
+            padding: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 16px 14px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: #15264a;
+            color: var(--text);
+            font-size: 1rem;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: rgba(78, 199, 255, 0.85);
+            box-shadow: 0 0 0 4px rgba(78, 199, 255, 0.14);
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .button {
+            flex: 1 1 150px;
+            min-width: 140px;
+            border: none;
+            border-radius: 18px;
+            padding: 16px 24px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            color: var(--text);
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            box-shadow: 0 14px 26px rgba(62, 140, 255, 0.2);
+        }
+
+        .button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 16px 30px rgba(62, 140, 255, 0.28);
+        }
+
+        .button--reset {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text);
+            box-shadow: none;
+        }
+
+        .result {
+            padding: 22px 20px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .result__value {
+            margin: 0;
+            font-size: 2.8rem;
+            letter-spacing: 0.02em;
+        }
+
+        .result__label {
+            margin: 10px 0 0;
+            color: var(--muted);
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .result__details {
+            margin-top: 16px;
+            display: grid;
+            gap: 10px;
+            color: var(--text);
+            font-size: 0.98rem;
+        }
+
+        .result__details span {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        @media (max-width: 520px) {
+            .row {
+                grid-template-columns: 1fr;
+            }
+
+            .button {
+                flex: 1 1 100%;
+            }
+        }
+    </style>    <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>Area Converter</h1>
+            <p>Convert common area units like square meters, square feet, acres, and hectares instantly.</p>
+        </div>
+
+        <div class="card">
+            <div class="row">
+                <div>
+                    <label for="input-value">Value</label>
+                    <input id="input-value" type="number" step="0.01" placeholder="Enter area value" />
+                </div>
+                <div>
+                    <label for="from-unit">From unit</label>
+                    <select id="from-unit">
+                        <option value="square_meters">Square meters</option>
+                        <option value="square_feet">Square feet</option>
+                        <option value="square_yards">Square yards</option>
+                        <option value="acres">Acres</option>
+                        <option value="hectares">Hectares</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div>
+                    <label for="to-unit">To unit</label>
+                    <select id="to-unit">
+                        <option value="square_meters">Square meters</option>
+                        <option value="square_feet">Square feet</option>
+                        <option value="square_yards">Square yards</option>
+                        <option value="acres">Acres</option>
+                        <option value="hectares">Hectares</option>
+                    </select>
+                </div>
+                <div>
+                    <label>&nbsp;</label>
+                    <div class="actions">
+                        <button class="button" type="button" id="convert">Convert</button>
+                        <button class="button button--reset" type="button" id="reset">Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="result" aria-live="polite">
+                <p class="result__value" id="output-value">0.00</p>
+                <p class="result__label" id="output-label">Select units and convert an area.</p>
+                <div class="result__details">
+                    <span id="detail-from">From: 0.00 square meters</span>
+                    <span id="detail-to">To: 0.00 square meters</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const inputValue = document.getElementById('input-value');
+        const fromUnit = document.getElementById('from-unit');
+        const toUnit = document.getElementById('to-unit');
+        const outputValue = document.getElementById('output-value');
+        const outputLabel = document.getElementById('output-label');
+        const detailFrom = document.getElementById('detail-from');
+        const detailTo = document.getElementById('detail-to');
+        const convertButton = document.getElementById('convert');
+        const resetButton = document.getElementById('reset');
+
+        function formatNumber(value) {
+            return Number(value).toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 4,
+            });
+        }
+
+        function toSquareMeters(value, unit) {
+            switch (unit) {
+                case 'square_meters':
+                    return value;
+                case 'square_feet':
+                    return value * 0.09290304;
+                case 'square_yards':
+                    return value * 0.83612736;
+                case 'acres':
+                    return value * 4046.8564224;
+                case 'hectares':
+                    return value * 10000;
+                default:
+                    return value;
+            }
+        }
+
+        function fromSquareMeters(value, unit) {
+            switch (unit) {
+                case 'square_meters':
+                    return value;
+                case 'square_feet':
+                    return value / 0.09290304;
+                case 'square_yards':
+                    return value / 0.83612736;
+                case 'acres':
+                    return value / 4046.8564224;
+                case 'hectares':
+                    return value / 10000;
+                default:
+                    return value;
+            }
+        }
+
+        function unitLabel(unit) {
+            switch (unit) {
+                case 'square_meters':
+                    return 'square meters';
+                case 'square_feet':
+                    return 'square feet';
+                case 'square_yards':
+                    return 'square yards';
+                case 'acres':
+                    return 'acres';
+                case 'hectares':
+                    return 'hectares';
+                default:
+                    return unit;
+            }
+        }
+
+        function convertArea() {
+            const input = Number(inputValue.value);
+            const from = fromUnit.value;
+            const to = toUnit.value;
+
+            if (Number.isNaN(input)) {
+                outputValue.textContent = 'Enter a number';
+                outputLabel.textContent = 'Please type an area value first.';
+                detailFrom.textContent = 'From: �';
+                detailTo.textContent = 'To: �';
+                return;
+            }
+
+            const squareMeters = toSquareMeters(input, from);
+            const result = fromSquareMeters(squareMeters, to);
+
+            outputValue.textContent = formatNumber(result);
+            outputLabel.textContent = `${formatNumber(input)} ${unitLabel(from)} =`;
+            detailFrom.textContent = `From: ${formatNumber(input)} ${unitLabel(from)}`;
+            detailTo.textContent = `To: ${formatNumber(result)} ${unitLabel(to)}`;
+        }
+
+        function resetConverter() {
+            inputValue.value = '';
+            fromUnit.value = 'square_meters';
+            toUnit.value = 'square_feet';
+            outputValue.textContent = '0.00';
+            outputLabel.textContent = 'Select units and convert an area.';
+            detailFrom.textContent = 'From: 0.00 square meters';
+            detailTo.textContent = 'To: 0.00 square meters';
+        }
+
+        convertButton.addEventListener('click', convertArea);
+        resetButton.addEventListener('click', resetConverter);
+        inputValue.addEventListener('keydown', event => {
+            if (event.key === 'Enter') {
+                convertArea();
+            }
+        });
+    </script>
+</body>
+</html>
+

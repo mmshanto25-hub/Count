@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weight Converter</title>
+    <style>
+        :root {
+            --bg: #0b1324;
+            --panel: #121b35;
+            --surface: #192342;
+            --text: #eef4ff;
+            --muted: #8da1c4;
+            --accent: #6fd6ff;
+            --accent2: #4d99ff;
+            --success: #6cedc1;
+            --danger: #ff6c75;
+            --shadow: rgba(0, 0, 0, 0.36);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at top, #1f3a70 0%, #0b1324 70%);
+            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }
+
+        .container {
+            width: min(560px, 100%);
+            background: linear-gradient(180deg, #17244b 0%, #121b35 100%);
+            border-radius: 28px;
+            box-shadow: 0 30px 70px var(--shadow);
+            overflow: hidden;
+        }
+
+        .hero {
+            padding: 28px 30px 18px;
+        }
+
+        .hero h1 {
+            margin: 0;
+            font-size: 2rem;
+            letter-spacing: 0.02em;
+        }
+
+        .hero p {
+            margin: 12px 0 0;
+            color: var(--muted);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .card {
+            background: #101a31;
+            padding: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 16px 14px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #152243;
+            color: var(--text);
+            font-size: 1rem;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: rgba(111, 214, 255, 0.8);
+            box-shadow: 0 0 0 4px rgba(111, 214, 255, 0.12);
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .button {
+            flex: 1 1 150px;
+            min-width: 140px;
+            border: none;
+            border-radius: 18px;
+            padding: 16px 24px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            color: var(--text);
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            box-shadow: 0 14px 26px rgba(80, 160, 255, 0.2);
+        }
+
+        .button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 16px 30px rgba(80, 160, 255, 0.28);
+        }
+
+        .button--reset {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text);
+            box-shadow: none;
+        }
+
+        .result {
+            padding: 22px 20px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .result__value {
+            margin: 0;
+            font-size: 2.8rem;
+            letter-spacing: 0.02em;
+        }
+
+        .result__label {
+            margin: 10px 0 0;
+            color: var(--muted);
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .result__details {
+            margin-top: 16px;
+            display: grid;
+            gap: 10px;
+            color: var(--text);
+            font-size: 0.98rem;
+        }
+
+        .result__details span {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        @media (max-width: 520px) {
+            .row {
+                grid-template-columns: 1fr;
+            }
+
+            .button {
+                flex: 1 1 100%;
+            }
+        }
+    </style>    <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>Weight Converter</h1>
+            <p>Convert weight units fast and clearly with a sleek interface and instant results.</p>
+        </div>
+
+        <div class="card">
+            <div class="row">
+                <div>
+                    <label for="input-value">Value</label>
+                    <input id="input-value" type="number" min="0" step="0.01" placeholder="Enter amount" />
+                </div>
+                <div>
+                    <label for="from-unit">From unit</label>
+                    <select id="from-unit">
+                        <option value="kilogram">Kilogram</option>
+                        <option value="gram">Gram</option>
+                        <option value="milligram">Milligram</option>
+                        <option value="pound">Pound</option>
+                        <option value="ounce">Ounce</option>
+                        <option value="ton">Ton</option>
+                        <option value="stone">Stone</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div>
+                    <label for="to-unit">To unit</label>
+                    <select id="to-unit">
+                        <option value="kilogram">Kilogram</option>
+                        <option value="gram">Gram</option>
+                        <option value="milligram">Milligram</option>
+                        <option value="pound">Pound</option>
+                        <option value="ounce">Ounce</option>
+                        <option value="ton">Ton</option>
+                        <option value="stone">Stone</option>
+                    </select>
+                </div>
+                <div>
+                    <label>&nbsp;</label>
+                    <div class="actions">
+                        <button class="button" type="button" id="convert">Convert</button>
+                        <button class="button button--reset" type="button" id="reset">Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="result" aria-live="polite">
+                <p class="result__value" id="output-value">0.00</p>
+                <p class="result__label" id="output-label">Choose units and convert a value.</p>
+                <div class="result__details">
+                    <span id="detail-from">From: 0.00 kilogram</span>
+                    <span id="detail-to">To: 0.00 kilogram</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const units = {
+            kilogram: 1,
+            gram: 0.001,
+            milligram: 0.000001,
+            pound: 0.45359237,
+            ounce: 0.0283495231,
+            ton: 1000,
+            stone: 6.35029318,
+        };
+
+        const inputValue = document.getElementById('input-value');
+        const fromUnit = document.getElementById('from-unit');
+        const toUnit = document.getElementById('to-unit');
+        const outputValue = document.getElementById('output-value');
+        const outputLabel = document.getElementById('output-label');
+        const detailFrom = document.getElementById('detail-from');
+        const detailTo = document.getElementById('detail-to');
+        const convertButton = document.getElementById('convert');
+        const resetButton = document.getElementById('reset');
+
+        function formatNumber(value) {
+            return Number(value).toLocaleString('en-US', {
+                maximumFractionDigits: 6,
+                minimumFractionDigits: 2,
+            });
+        }
+
+        function convertWeight() {
+            const value = parseFloat(inputValue.value);
+            const from = fromUnit.value;
+            const to = toUnit.value;
+
+            if (Number.isNaN(value)) {
+                outputValue.textContent = '0.00';
+                outputLabel.textContent = 'Please enter a numeric value to convert.';
+                detailFrom.textContent = 'From: �';
+                detailTo.textContent = 'To: �';
+                return;
+            }
+
+            const kilograms = value * units[from];
+            const converted = kilograms / units[to];
+
+            outputValue.textContent = formatNumber(converted);
+            outputLabel.textContent = `${formatNumber(value)} ${from} equals ${formatNumber(converted)} ${to}.`;
+            detailFrom.textContent = `From: ${formatNumber(value)} ${from}`;
+            detailTo.textContent = `To: ${formatNumber(converted)} ${to}`;
+        }
+
+        function resetForm() {
+            inputValue.value = '';
+            fromUnit.value = 'kilogram';
+            toUnit.value = 'kilogram';
+            outputValue.textContent = '0.00';
+            outputLabel.textContent = 'Choose units and convert a value.';
+            detailFrom.textContent = 'From: 0.00 kilogram';
+            detailTo.textContent = 'To: 0.00 kilogram';
+        }
+
+        convertButton.addEventListener('click', convertWeight);
+        resetButton.addEventListener('click', resetForm);
+
+        resetForm();
+    </script>
+</body>
+</html>
+
