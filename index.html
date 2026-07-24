@@ -4,11 +4,287 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Calculator & Converter Hub</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: #050401;
+            --panel: #1a140f;
+            --surface: #20170d;
+            --text: #f7e3a3;
+            --muted: #c8ae6b;
+            --accent: #f7d251;
+            --accent2: #cf9d18;
+            --border: rgba(255, 215, 0, 0.2);
+            --shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text);
+            background: radial-gradient(circle at top, rgba(247, 210, 80, 0.12), transparent 34%),
+                linear-gradient(180deg, #050401 0%, #060503 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 28px;
+        }
+
+        .page {
+            width: min(980px, 100%);
+            display: grid;
+            gap: 24px;
+        }
+
+        .hero {
+            background: rgba(18, 12, 8, 0.92);
+            border: 1px solid rgba(255, 215, 0, 0.18);
+            border-radius: 28px;
+            padding: 30px 32px;
+            box-shadow: var(--shadow);
+        }
+
+        .hero h1 {
+            margin: 0;
+            font-size: clamp(2.4rem, 4vw, 3.6rem);
+            letter-spacing: 0.01em;
+            line-height: 1.05;
+        }
+
+        .hero p {
+            margin: 18px 0 0;
+            color: var(--muted);
+            font-size: 1rem;
+            line-height: 1.75;
+            max-width: 760px;
+        }
+
+        .sections {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: rgba(15, 12, 8, 0.92);
+            border: 1px solid rgba(225, 185, 92, 0.2);
+            border-radius: 24px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
+            padding: 24px;
+        }
+
+        .card h2 {
+            margin: 0 0 12px;
+            font-size: 1.5rem;
+            color: #f6e6a7;
+        }
+
+        .card p {
+            margin: 0 0 22px;
+            color: #cdbb84;
+            line-height: 1.7;
+        }
+
+        .links {
+            display: grid;
+            gap: 14px;
+        }
+
+        .link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            width: 100%;
+            padding: 16px 18px;
+            text-decoration: none;
+            border-radius: 18px;
+            background: rgba(255, 215, 0, 0.08);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            color: #fff5c4;
+            transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+        }
+
+        .link strong {
+            font-size: 1rem;
+        }
+
+        .link span {
+            color: #d4c488;
+            font-size: 0.95rem;
+        }
+
+        .link:hover,
+        .link:focus-visible {
+            transform: translateY(-2px);
+            background: rgba(255, 215, 0, 0.18);
+            border-color: rgba(255, 215, 0, 0.35);
+        }
+
+        .section-footer {
+            margin-top: 18px;
+            color: #c1b178;
+            font-size: 0.95rem;
+            line-height: 1.65;
+        }
+
+        @media (max-width: 840px) {
+            .sections {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 540px) {
+            body {
+                padding: 20px;
+            }
+
+            .hero,
+            .card {
+                padding: 22px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="theme.css">
 </head>
 
 <body>
-    <h1>hello world</h1>
+    <main class="page">
+        <section class="hero">
+            <h1>Calculator & Converter Hub</h1>
+            <p>Choose the tool you need from a professional dashboard. Use fast calculators for arithmetic, scientific
+                math, and BMI, or switch units with length, weight, and temperature converters.</p>
+        </section>
+
+        <div class="sections">
+            <section class="card">
+                <h2>Core Calculators</h2>
+                <p>Everyday computation with general, scientific, BMI, and mortgage support.</p>
+                <div class="links">
+                    <a class="link" href="calculator.html">
+                        <strong>General Calculator</strong>
+                        <span>Basic arithmetic</span>
+                    </a>
+                    <a class="link" href="scienthific calculator.html">
+                        <strong>Scientific Calculator</strong>
+                        <span>Trig, logs, powers, factorial</span>
+                    </a>
+                    <a class="link" href="bmi calculator.html">
+                        <strong>BMI Calculator</strong>
+                        <span>Weight and height calculator</span>
+                    </a>
+                    <a class="link" href="mortage calculator.html">
+                        <strong>Mortgage Calculator</strong>
+                        <span>Loan payments and interest</span>
+                    </a>
+                </div>
+                <div class="section-footer">Open any calculator to solve equations, analyze formulas, and compute values
+                    with confidence.</div>
+            </section>
+            <section class="card">
+                <h2>Finance & Savings</h2>
+                <p>Plan your future with loan, investment, and savings calculators.</p>
+                <div class="links">
+                    <a class="link" href="loan calculator.html">
+                        <strong>Loan Calculator</strong>
+                        <span>Calculate monthly payments</span>
+                    </a>
+                    <a class="link" href="investment calculator.html">
+                        <strong>Investment Calculator</strong>
+                        <span>Estimate returns on investments</span>
+                    </a>
+                    <a class="link" href="savings calculator.html">
+                        <strong>Savings Calculator</strong>
+                        <span>Future value of savings</span>
+                    </a>
+                    <a class="link" href="angle converter.html">
+                        <strong>Angle Converter</strong>
+                        <span>Degrees, radians, and gradients</span>
+                    </a>
+                </div>
+                <div class="section-footer">Use these financial tools to plan your budget, track savings, and compare
+                    growth scenarios.</div>
+            </section>
+            <section class="card">
+                <h2>Essential Converters</h2>
+                <p>Convert everyday units such as length, weight, temperature, and currency.</p>
+                <div class="links">
+                    <a class="link" href="length converter.html">
+                        <strong>Length Converter</strong>
+                        <span>Meter, mile, inch, yard</span>
+                    </a>
+                    <a class="link" href="weight converter.html">
+                        <strong>Weight Converter</strong>
+                        <span>Kilogram, pound, ounce, ton</span>
+                    </a>
+                    <a class="link" href="temperature converter.html">
+                        <strong>Temperature Converter</strong>
+                        <span>Celsius, Fahrenheit, Kelvin, Rankine</span>
+                    </a>
+                    <a class="link" href="currency converter.html">
+                        <strong>Currency Converter</strong>
+                        <span>USD, EUR, GBP, JPY</span>
+                    </a>
+                </div>
+                <div class="section-footer">Accurate unit conversion for travel, finance, and daily measurement tasks.
+                </div>
+            </section>
+            <section class="card">
+                <h2>Measurement Converters</h2>
+                <p>Fast conversions for time, data, volume, and area units.</p>
+                <div class="links">
+                    <a class="link" href="time converter.html">
+                        <strong>Time Converter</strong>
+                        <span>Seconds, minutes, hours, days</span>
+                    </a>
+                    <a class="link" href="data converter.html">
+                        <strong>Data Converter</strong>
+                        <span>Byte, KB, MB, GB, TB</span>
+                    </a>
+                    <a class="link" href="volume converter.html">
+                        <strong>Volume Converter</strong>
+                        <span>Liter, gallon, quart, pint</span>
+                    </a>
+                    <a class="link" href="area converter.html">
+                        <strong>Area Converter</strong>
+                        <span>Square meter, square foot, acre, hectare</span>
+                    </a>
+                </div>
+                <div class="section-footer">Switch units quickly across common measurements and project calculations.
+                </div>
+            </section>
+            <section class="card">
+                <h2>Advanced Converters</h2>
+                <p>Convert pressure, energy, power, and frequency with precision.</p>
+                <div class="links">
+                    <a class="link" href="pressure converter.html">
+                        <strong>Pressure Converter</strong>
+                        <span>Pascal, bar, psi, atm</span>
+                    </a>
+                    <a class="link" href="energy converter.html">
+                        <strong>Energy Converter</strong>
+                        <span>Joule, calorie, BTU, electronvolt</span>
+                    </a>
+                    <a class="link" href="power converter.html">
+                        <strong>Power Converter</strong>
+                        <span>Watt, horsepower, BTU/hour</span>
+                    </a>
+                    <a class="link" href="frequency converter.html">
+                        <strong>Frequency Converter</strong>
+                        <span>Hertz, kilohertz, megahertz, gigahertz</span>
+                    </a>
+                </div>
+                <div class="section-footer">Technical converters for science, engineering, and energy workflows.</div>
+            </section>
+        </div>
+    </main>
+
 </body>
 
 </html>
